@@ -1,0 +1,10 @@
+# DO NOT CHANGE config-version
+config-version: 1
+
+stat-bars:
+  format: "{profession} Lv.&b{level}"
+  chatcolor-char: "&"
+  mcmmo:
+    enabled: true
+  mmocore:
+    enabled: true

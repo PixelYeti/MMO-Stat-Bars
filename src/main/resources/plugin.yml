@@ -1,0 +1,8 @@
+name: MMO-Stat-Bars
+main: com.cjmckenzie.mmostatbars.MmoStatBars
+author: Callum McKenzie
+version: ${project.version}
+api-version: 1.18
+depend: [MMOCore,mcMMO]
+description: >
+  A plugin created for the Synthria Server
