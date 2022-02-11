@@ -1,8 +1,15 @@
 # DO NOT CHANGE config-version
-config-version: 1
+config-version: 2
 
 stat-bars:
-  format: "{profession} Lv.&b{level}"
+  #
+  # Formatting:
+  # {profession}      - Profession name
+  # {level}           - Profession level
+  # {percentage}      - Percentage of level
+  # {currentXp}       - Current XP count for level
+  # {levelTotalXp}    - Total XP required for level
+  format: "{profession} Lv.&b{level}&r {currentXp}&7/{levelTotalXp}"
   chatcolor-char: "&"
   mcmmo:
     enabled: true

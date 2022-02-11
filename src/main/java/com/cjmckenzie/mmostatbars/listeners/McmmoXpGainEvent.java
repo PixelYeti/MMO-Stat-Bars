@@ -21,7 +21,9 @@ public class McmmoXpGainEvent implements Listener {
     float xpRemaining = ExperienceAPI.getXPRemaining(player, event.getSkill().name());
     xpRemaining = xpRemaining - event.getRawXpGained();
 
-    float percentage = ((xpToNextLevel - xpRemaining) / xpToNextLevel);
+    float currentXp = xpToNextLevel - xpRemaining;
+
+    float percentage = (currentXp / xpToNextLevel);
 
     int level = event.getSkillLevel();
     if (percentage > 1) {
@@ -29,7 +31,8 @@ public class McmmoXpGainEvent implements Listener {
       level++;
     }
 
-    BarUtils.displayBar(player, event.getSkill().name(), percentage, level, "mcmmo");
+    BarUtils.displayBar(player, event.getSkill().name(), percentage, level, currentXp,
+        xpToNextLevel, "mcmmo");
   }
 
 }

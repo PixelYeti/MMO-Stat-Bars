@@ -2,6 +2,8 @@ package com.cjmckenzie.mmostatbars.util;
 
 import com.cjmckenzie.mmostatbars.MmoStatBars;
 import com.cjmckenzie.mmostatbars.models.BossBarTracker;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,7 @@ public class BarUtils {
   private static final Map<Player, Map<NamespacedKey, BossBarTracker>> playerBossBars = new HashMap<>();
 
   public static void displayBar(Player player, String professionName, float progress, int level,
-      String plugin) {
+      float exp, float maxExp, String plugin) {
     String key = String.format("mmoStatBars-%s-%s-%s", player.getUniqueId(), professionName,
         plugin);
 
@@ -38,21 +40,14 @@ public class BarUtils {
       playersBars = new HashMap<>();
     }
 
-    FileConfiguration config = MmoStatBars.getInstance().getConfig();
-    String defaultFormat = config.getDefaults().getString("stat-bars.format");
-    String defaultChatChar = config.getDefaults().getString("stat-bars.chatcolor-char", "&");
-
-    String titleFormat = config.getString("stat-bars.format", defaultFormat);
-    String chatChar = config.getString("stat-bars.chatcolor-char", defaultChatChar);
-    String title = ChatColor.translateAlternateColorCodes(chatChar.charAt(0),
-        titleFormat.replace("{profession}", StringUtils.capitalize(professionName))
-            .replace("{level}", String.valueOf(level)));
+    String title = createTitle(professionName, level, progress, exp, maxExp);
 
     BossBarTracker bar;
     if (playersBars.containsKey(namespacedKey)) {
       bar = playersBars.get(namespacedKey);
     } else {
-      BossBar bossBar = Bukkit.createBossBar(namespacedKey, title, BarColor.YELLOW, BarStyle.SOLID);
+      BossBar bossBar = Bukkit.createBossBar(namespacedKey, title, BarColor.YELLOW,
+          BarStyle.SEGMENTED_10);
       bossBar.addPlayer(player);
 
       bar = new BossBarTracker()
@@ -79,5 +74,30 @@ public class BarUtils {
   public static List<BossBarTracker> getAllBossBars() {
     return playerBossBars.values().stream().flatMap(map -> map.values().stream())
         .collect(Collectors.toList());
+  }
+
+  private static String createTitle(String professionName, int level, float progress,
+      float currentXp, float levelXp) {
+    if (level == 0) {
+      return "Learning a new skill...";
+    }
+
+    FileConfiguration config = MmoStatBars.getInstance().getConfig();
+    String defaultFormat = config.getDefaults().getString("stat-bars.format");
+    String defaultChatChar = config.getDefaults().getString("stat-bars.chatcolor-char", "&");
+
+    String titleFormat = config.getString("stat-bars.format", defaultFormat);
+    String chatChar = config.getString("stat-bars.chatcolor-char", defaultChatChar);
+
+    DecimalFormat df = new DecimalFormat("#.#");
+    df.setRoundingMode(RoundingMode.CEILING);
+
+    return ChatColor.translateAlternateColorCodes(chatChar.charAt(0),
+        titleFormat.replace("{profession}", StringUtils.capitalize(professionName.toLowerCase()))
+            .replace("{level}", String.valueOf(level))
+            .replace("{percentage}", df.format(progress) + "%")
+            .replace("{currentXp}", String.valueOf(Math.round(currentXp)))
+            .replace("{levelTotalXp}", String.valueOf(Math.round(levelXp)))
+    );
   }
 }

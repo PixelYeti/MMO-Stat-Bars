@@ -32,7 +32,7 @@ public class MMOCoreXpGainEvent implements Listener {
       percentage = percentage - 1;
       level++;
     }
-    BarUtils.displayBar(player, event.getProfession().getName(), percentage, level, "mmocore");
+    BarUtils.displayBar(player, event.getProfession().getName(), percentage, level, skillExp, maxExp, "mmocore");
   }
 
 }
