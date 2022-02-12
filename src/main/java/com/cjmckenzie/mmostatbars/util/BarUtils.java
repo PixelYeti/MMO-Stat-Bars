@@ -95,7 +95,7 @@ public class BarUtils {
     return ChatColor.translateAlternateColorCodes(chatChar.charAt(0),
         titleFormat.replace("{profession}", StringUtils.capitalize(professionName.toLowerCase()))
             .replace("{level}", String.valueOf(level))
-            .replace("{percentage}", df.format(progress) + "%")
+            .replace("{percentage}", df.format(progress * 100) + "%")
             .replace("{currentXp}", String.valueOf(Math.round(currentXp)))
             .replace("{levelTotalXp}", String.valueOf(Math.round(levelXp)))
     );
@@ -108,8 +108,6 @@ public class BarUtils {
 
     String professionColor = config.getString("stat-bars.professions." + profession.toLowerCase(),
         defaultColor);
-
-    System.out.println(professionColor);
 
     try {
       return BarColor.valueOf(professionColor);
