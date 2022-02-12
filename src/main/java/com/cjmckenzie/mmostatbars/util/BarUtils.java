@@ -46,7 +46,7 @@ public class BarUtils {
     if (playersBars.containsKey(namespacedKey)) {
       bar = playersBars.get(namespacedKey);
     } else {
-      BossBar bossBar = Bukkit.createBossBar(namespacedKey, title, BarColor.YELLOW,
+      BossBar bossBar = Bukkit.createBossBar(namespacedKey, title, getBarColor(professionName),
           BarStyle.SEGMENTED_10);
       bossBar.addPlayer(player);
 
@@ -99,5 +99,25 @@ public class BarUtils {
             .replace("{currentXp}", String.valueOf(Math.round(currentXp)))
             .replace("{levelTotalXp}", String.valueOf(Math.round(levelXp)))
     );
+  }
+
+  private static BarColor getBarColor(String profession) {
+    FileConfiguration config = MmoStatBars.getInstance().getConfig();
+
+    String defaultColor = config.getString("stat-bars.default-bar-color", "YELLOW");
+
+    String professionColor = config.getString("stat-bars.professions." + profession.toLowerCase(),
+        defaultColor);
+
+    System.out.println(professionColor);
+
+    try {
+      return BarColor.valueOf(professionColor);
+    } catch (IllegalArgumentException | NullPointerException e) {
+      MmoStatBars.getInstance().getLogger()
+          .warning("Invalid color '" + professionColor + "' for '" + profession + "'");
+
+      return BarColor.valueOf(defaultColor);
+    }
   }
 }

@@ -15,3 +15,32 @@ stat-bars:
     enabled: true
   mmocore:
     enabled: true
+
+  # Valid Colors:
+  #  PINK,
+  #  BLUE,
+  #  RED,
+  #  GREEN,
+  #  YELLOW,
+  #  PURPLE,
+  #  WHITE;
+  default-bar-color: YELLOW
+  professions:
+    acrobatics: PINK
+    alchemy: PURPLE
+    archery: BLUE
+    axes: BLUE
+    enchanting: PURPLE
+    excavation: YELLOW
+    farming: GREEN
+    fishing: PURPLE
+    herbalism: GREEN
+    mining: YELLOW
+    repair: PURPLE
+    salvage: PURPLE
+    smelting: PURPLE
+    smithing: RED
+    swords: BLUE
+    taming: RED
+    unarmed: BLUE
+    woodcutting: GREEN
