@@ -2,6 +2,7 @@ package com.cjmckenzie.mmostatbars;
 
 import com.cjmckenzie.mmostatbars.listeners.MMOCoreXpGainEvent;
 import com.cjmckenzie.mmostatbars.listeners.McmmoXpGainEvent;
+import com.cjmckenzie.mmostatbars.listeners.PlayerListener;
 import com.cjmckenzie.mmostatbars.util.BarUtils;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -38,11 +39,14 @@ public class MmoStatBars extends JavaPlugin {
 
     saveDefaultConfig();
 
-    final int configVersion = getConfig().contains("config-version", true) ? getConfig().getInt("config-version") : -1;
+    final int configVersion =
+        getConfig().contains("config-version", true) ? getConfig().getInt("config-version") : -1;
     final int defConfigVersion = getConfig().getDefaults().getInt("config-version", 1);
     if (configVersion != defConfigVersion) {
       getLogger().warning("You may be using an outdated config.yml!");
-      getLogger().warning("(Your config version: '{}" + configVersion + "' | Expected config version: '" + defConfigVersion + "')");
+      getLogger().warning(
+          "(Your config version: '{}" + configVersion + "' | Expected config version: '"
+              + defConfigVersion + "')");
     }
 
     if (getConfig().getBoolean("stat-bars.mcmmo.enabled", true)) {
@@ -51,6 +55,8 @@ public class MmoStatBars extends JavaPlugin {
     if (getConfig().getBoolean("stat-bars.mmocore.enabled", true)) {
       this.getServer().getPluginManager().registerEvents(new MMOCoreXpGainEvent(), this);
     }
+
+    this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
   }
 
   public static MmoStatBars getInstance() {

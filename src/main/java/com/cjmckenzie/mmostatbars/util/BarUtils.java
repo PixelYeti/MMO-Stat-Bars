@@ -90,7 +90,7 @@ public class BarUtils {
     String chatChar = config.getString("stat-bars.chatcolor-char", defaultChatChar);
 
     DecimalFormat df = new DecimalFormat("#.#");
-    df.setRoundingMode(RoundingMode.CEILING);
+    df.setRoundingMode(RoundingMode.HALF_EVEN);
 
     return ChatColor.translateAlternateColorCodes(chatChar.charAt(0),
         titleFormat.replace("{profession}", StringUtils.capitalize(professionName.toLowerCase()))
@@ -117,5 +117,12 @@ public class BarUtils {
 
       return BarColor.valueOf(defaultColor);
     }
+  }
+
+  public static void removePlayerBossBars(Player player) {
+    if (!playerBossBars.containsKey(player)) {
+      return;
+    }
+    playerBossBars.remove(player);
   }
 }
