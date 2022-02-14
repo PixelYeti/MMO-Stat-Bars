@@ -68,6 +68,13 @@ public class BarUtils {
   }
 
   public static void removeBossBar(Player player, NamespacedKey key) {
+    if (!playerBossBars.containsKey(player)) {
+      return;
+    }
+
+    if (!playerBossBars.get(player).containsKey(key)) {
+      return;
+    }
     playerBossBars.get(player).remove(key);
   }
 
@@ -120,6 +127,9 @@ public class BarUtils {
   }
 
   public static void removePlayerBossBars(Player player) {
+    if (playerBossBars == null) {
+      return;
+    }
     if (!playerBossBars.containsKey(player)) {
       return;
     }
