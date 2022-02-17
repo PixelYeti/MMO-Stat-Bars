@@ -7,6 +7,7 @@ import com.cjmckenzie.mmostatbars.util.BarUtils;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BossBar;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,7 +20,6 @@ public class MmoStatBars extends JavaPlugin {
   public MmoStatBars() {
     plugin = this;
   }
-
 
   @Override
   public void onDisable() {
@@ -57,6 +57,18 @@ public class MmoStatBars extends JavaPlugin {
     }
 
     this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+
+    NamespacedKey tempKey = new NamespacedKey(this, "temp");
+    Bukkit.getBossBars().forEachRemaining(keyedBossBar -> {
+      if (!keyedBossBar.getKey().getNamespace().equals(tempKey.getNamespace())) {
+        return;
+      }
+
+      keyedBossBar.removeAll();
+      keyedBossBar.setVisible(false);
+
+      Bukkit.removeBossBar(keyedBossBar.getKey());
+    });
   }
 
   public static MmoStatBars getInstance() {

@@ -2,12 +2,14 @@ package com.cjmckenzie.mmostatbars.util;
 
 import com.cjmckenzie.mmostatbars.MmoStatBars;
 import com.cjmckenzie.mmostatbars.models.BossBarTracker;
+
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,7 +28,7 @@ public class BarUtils {
   private static final Map<Player, Map<NamespacedKey, BossBarTracker>> playerBossBars = new HashMap<>();
 
   public static void displayBar(Player player, String professionName, float progress, int level,
-      float exp, float maxExp, String plugin) {
+                                float exp, float maxExp, String plugin) {
     String key = String.format("mmoStatBars-%s-%s-%s", player.getUniqueId(), professionName,
         plugin);
 
@@ -84,7 +86,7 @@ public class BarUtils {
   }
 
   private static String createTitle(String professionName, int level, float progress,
-      float currentXp, float levelXp) {
+                                    float currentXp, float levelXp) {
     if (level == 0) {
       return "Learning a new skill...";
     }
@@ -127,12 +129,18 @@ public class BarUtils {
   }
 
   public static void removePlayerBossBars(Player player) {
-    if (playerBossBars == null) {
-      return;
-    }
     if (!playerBossBars.containsKey(player)) {
       return;
     }
+
+    Map<NamespacedKey, BossBarTracker> playersBars = playerBossBars.get(player);
+    for (BossBarTracker bossBarTracker : playersBars.values()) {
+      bossBarTracker.getBossBar().removeAll();
+      bossBarTracker.getBossBar().setVisible(false);
+
+      Bukkit.removeBossBar(bossBarTracker.getKey());
+    }
+
     playerBossBars.remove(player);
   }
 }
