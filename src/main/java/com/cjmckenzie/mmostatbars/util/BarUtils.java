@@ -5,6 +5,7 @@ import com.cjmckenzie.mmostatbars.models.BossBarTracker;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,8 @@ public class BarUtils {
 
   public static void displayBar(Player player, String professionName, float progress, int level,
                                 float exp, float maxExp, String plugin) {
-    String key = String.format("mmoStatBars-%s-%s-%s", player.getUniqueId(), professionName,
+    String key = String.format("mmoStatBars-%s-%s-%s", player.getUniqueId(),
+        professionName.replace(" ", "_").toLowerCase(),
         plugin);
 
     NamespacedKey namespacedKey = NamespacedKey.fromString(key);
@@ -92,7 +94,7 @@ public class BarUtils {
     }
 
     FileConfiguration config = MmoStatBars.getInstance().getConfig();
-    String defaultFormat = config.getDefaults().getString("stat-bars.format");
+    String defaultFormat = config.getDefaults().getString("stat-bars.format", "");
     String defaultChatChar = config.getDefaults().getString("stat-bars.chatcolor-char", "&");
 
     String titleFormat = config.getString("stat-bars.format", defaultFormat);
@@ -102,7 +104,10 @@ public class BarUtils {
     df.setRoundingMode(RoundingMode.HALF_EVEN);
 
     return ChatColor.translateAlternateColorCodes(chatChar.charAt(0),
-        titleFormat.replace("{profession}", StringUtils.capitalize(professionName.toLowerCase()))
+        titleFormat.replace("{profession}",
+                Arrays.stream(professionName.toLowerCase().split(" "))
+                    .map(StringUtils::capitalize)
+                    .collect(Collectors.joining(" ")))
             .replace("{level}", String.valueOf(level))
             .replace("{percentage}", df.format(progress * 100) + "%")
             .replace("{currentXp}", String.valueOf(Math.round(currentXp)))
