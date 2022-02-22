@@ -4,21 +4,25 @@ import com.cjmckenzie.mmostatbars.listeners.MMOCoreXpGainEvent;
 import com.cjmckenzie.mmostatbars.listeners.McmmoXpGainEvent;
 import com.cjmckenzie.mmostatbars.listeners.PlayerListener;
 import com.cjmckenzie.mmostatbars.util.BarUtils;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.boss.BossBar;
+import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class MmoStatBars extends JavaPlugin {
+import java.util.ArrayList;
+import java.util.List;
 
-  private static final Logger logger = LogManager.getLogManager().getLogger("Minecraft");
+public class MmoStatBars extends JavaPlugin {
 
   private static MmoStatBars plugin;
 
   public MmoStatBars() {
     plugin = this;
+  }
+
+  public static MmoStatBars getInstance() {
+    return plugin;
   }
 
   @Override
@@ -59,19 +63,19 @@ public class MmoStatBars extends JavaPlugin {
     this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
     NamespacedKey tempKey = new NamespacedKey(this, "temp");
-    Bukkit.getBossBars().forEachRemaining(keyedBossBar -> {
+
+    List<KeyedBossBar> bossBarList = new ArrayList<>();
+    Bukkit.getBossBars().forEachRemaining(bossBarList::add);
+
+    for (KeyedBossBar keyedBossBar : bossBarList) {
       if (!keyedBossBar.getKey().getNamespace().equals(tempKey.getNamespace())) {
-        return;
+        continue;
       }
 
       keyedBossBar.removeAll();
       keyedBossBar.setVisible(false);
 
       Bukkit.removeBossBar(keyedBossBar.getKey());
-    });
-  }
-
-  public static MmoStatBars getInstance() {
-    return plugin;
+    }
   }
 }
