@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class MmoStatBars extends JavaPlugin {
 
@@ -54,10 +55,18 @@ public class MmoStatBars extends JavaPlugin {
     }
 
     if (getConfig().getBoolean("stat-bars.mcmmo.enabled", true)) {
-      this.getServer().getPluginManager().registerEvents(new McmmoXpGainEvent(), this);
+      if (getServer().getPluginManager().getPlugin("mcMMO") == null) {
+        getLogger().log(Level.WARNING, "Error enabling mcMMO support. McMMO is not installed");
+      } else {
+        this.getServer().getPluginManager().registerEvents(new McmmoXpGainEvent(), this);
+      }
     }
     if (getConfig().getBoolean("stat-bars.mmocore.enabled", true)) {
-      this.getServer().getPluginManager().registerEvents(new MMOCoreXpGainEvent(), this);
+      if (getServer().getPluginManager().getPlugin("MMOCore") == null) {
+        getLogger().log(Level.WARNING, "Error enabling MMOCore support. MMOCore is not installed");
+      } else {
+        this.getServer().getPluginManager().registerEvents(new MMOCoreXpGainEvent(), this);
+      }
     }
 
     this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
