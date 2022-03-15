@@ -1,5 +1,6 @@
 package com.cjmckenzie.mmostatbars;
 
+import com.cjmckenzie.mmostatbars.executors.ReloadCmd;
 import com.cjmckenzie.mmostatbars.listeners.MMOCoreXpGainEvent;
 import com.cjmckenzie.mmostatbars.listeners.McmmoXpGainEvent;
 import com.cjmckenzie.mmostatbars.listeners.PlayerListener;
@@ -70,6 +71,8 @@ public class MmoStatBars extends JavaPlugin {
     }
 
     this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+
+    this.getCommand("mmo-sb-reload").setExecutor(new ReloadCmd());
 
     NamespacedKey tempKey = new NamespacedKey(this, "temp");
 

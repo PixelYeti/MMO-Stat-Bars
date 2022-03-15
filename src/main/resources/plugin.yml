@@ -6,3 +6,7 @@ api-version: 1.18
 softdepend: [MMOCore,mcMMO]
 description: >
   A plugin created for the Synthria Server
+commands:
+  mmo-sb-reload:
+    description: Reloads the MMO Stat Bars config file
+    permission: mmo-sb.reload
