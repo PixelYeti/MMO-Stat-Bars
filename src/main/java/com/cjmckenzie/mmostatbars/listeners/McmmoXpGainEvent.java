@@ -32,7 +32,7 @@ public class McmmoXpGainEvent implements Listener {
     float percentage = expResponse.getCurrentXp() / expResponse.getXpToNextLevel();
 
     BarUtils.displayBar(player, event.getSkill().name(), percentage, expResponse.getLevel(),
-        expResponse.getCurrentXp(), expResponse.getXpToNextLevel(), "mcmmo");
+        expResponse.getCurrentXp(), expResponse.getXpToNextLevel(), Math.round(event.getRawXpGained()), "mcmmo");
   }
 
   private ExpResponse getNewExpInfo(McMMOPlayer player, int startLevel, float currentXp) {

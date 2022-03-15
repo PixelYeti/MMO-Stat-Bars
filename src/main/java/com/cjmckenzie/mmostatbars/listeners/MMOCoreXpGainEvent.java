@@ -30,7 +30,7 @@ public class MMOCoreXpGainEvent implements Listener {
     float percentage = expResponse.getCurrentXp() / expResponse.getXpToNextLevel();
 
     BarUtils.displayBar(player, event.getProfession().getName(), percentage, expResponse.getLevel(),
-        expResponse.getCurrentXp(), expResponse.getXpToNextLevel(), "mmocore");
+        expResponse.getCurrentXp(), expResponse.getXpToNextLevel(), event.getExperience(), "mmocore");
   }
 
   private ExpResponse getNewExpInfo(Profession profession, int startLevel,

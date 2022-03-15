@@ -29,7 +29,7 @@ public class BarUtils {
   private static final Map<Player, Map<NamespacedKey, BossBarTracker>> playerBossBars = new HashMap<>();
 
   public static void displayBar(Player player, String professionName, float progress, int level,
-                                float exp, float maxExp, String plugin) {
+                                float exp, float maxExp, int gainedExp, String plugin) {
     String key = String.format("mmoStatBars-%s-%s-%s", player.getUniqueId(),
         professionName.replace(" ", "_").toLowerCase(),
         plugin);
@@ -44,7 +44,7 @@ public class BarUtils {
       playersBars = new HashMap<>();
     }
 
-    String title = createTitle(professionName, level, progress, exp, maxExp);
+    String title = createTitle(professionName, level, progress, exp, maxExp, gainedExp);
 
     BossBarTracker bar;
     if (playersBars.containsKey(namespacedKey)) {
@@ -88,7 +88,7 @@ public class BarUtils {
   }
 
   private static String createTitle(String professionName, int level, float progress,
-                                    float currentXp, float levelXp) {
+                                    float currentXp, float levelXp, int gainedExp) {
     if (level == 0) {
       return "Learning a new skill...";
     }
@@ -112,6 +112,7 @@ public class BarUtils {
             .replace("{percentage}", df.format(progress * 100) + "%")
             .replace("{currentXp}", String.valueOf(Math.round(currentXp)))
             .replace("{levelTotalXp}", String.valueOf(Math.round(levelXp)))
+            .replace("{gainedXp}", String.valueOf(gainedExp))
     );
   }
 
